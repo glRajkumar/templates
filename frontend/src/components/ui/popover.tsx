@@ -12,13 +12,7 @@ function PopoverTrigger(props: PopoverPrimitive.Trigger.Props) {
 }
 
 function PopoverClose({ className, ...props }: PopoverPrimitive.Close.Props) {
-  return (
-    <PopoverPrimitive.Close
-      data-slot="popover-close"
-      className={cn(className)}
-      {...props}
-    />
-  )
+  return <PopoverPrimitive.Close data-slot="popover-close" className={cn(className)} {...props} />
 }
 
 function PopoverArrow({ className, ...props }: PopoverPrimitive.Arrow.Props) {

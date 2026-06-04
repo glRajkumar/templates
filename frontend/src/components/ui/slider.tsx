@@ -1,6 +1,6 @@
-import { Slider as SliderPrimitive } from "@base-ui/react/slider"
+import { Slider as SliderPrimitive } from '@base-ui/react/slider'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 function Slider({
   className,
@@ -11,12 +11,20 @@ function Slider({
   ...props
 }: SliderPrimitive.Root.Props) {
   const valueArr = value !== undefined ? (Array.isArray(value) ? value : [value]) : undefined
-  const defaultArr = defaultValue !== undefined ? (Array.isArray(defaultValue) ? defaultValue : [defaultValue]) : undefined
+  const defaultArr =
+    defaultValue !== undefined
+      ? Array.isArray(defaultValue)
+        ? defaultValue
+        : [defaultValue]
+      : undefined
   const _values = valueArr ?? defaultArr ?? [min]
 
   return (
     <SliderPrimitive.Root
-      className={cn("w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-auto", className)}
+      className={cn(
+        'w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-auto',
+        className,
+      )}
       data-slot="slider"
       defaultValue={defaultValue}
       value={value}

@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react'
 import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group'
 import { Radio as RadioPrimitive } from '@base-ui/react/radio'
@@ -33,9 +31,21 @@ type RadioProps = {
   as?: React.ElementType
 } & RadioPrimitive.Root.Props
 
-function Radio({ label, description, wrapperCls, className, as: Comp = 'label', ...props }: RadioProps) {
+function Radio({
+  label,
+  description,
+  wrapperCls,
+  className,
+  as: Comp = 'label',
+  ...props
+}: RadioProps) {
   return (
-    <Comp className={cn('flex cursor-pointer select-none items-start gap-2 has-[:disabled]:cursor-not-allowed', wrapperCls)}>
+    <Comp
+      className={cn(
+        'flex cursor-pointer select-none items-start gap-2 has-[:disabled]:cursor-not-allowed',
+        wrapperCls,
+      )}
+    >
       <RadioIndicator className={cn(className)} {...props} />
       <p className="grid">
         <span className="text-sm font-medium leading-none">{label}</span>

@@ -5,7 +5,10 @@ import { cn } from '@/lib/utils'
 
 const NumberFieldRoot = NumberFieldPrimitive.Root
 
-function NumberFieldGroup({ className, ...props }: React.ComponentProps<typeof NumberFieldPrimitive.Group>) {
+function NumberFieldGroup({
+  className,
+  ...props
+}: React.ComponentProps<typeof NumberFieldPrimitive.Group>) {
   return (
     <NumberFieldPrimitive.Group
       data-slot="number-field-group"
@@ -22,7 +25,10 @@ function NumberFieldGroup({ className, ...props }: React.ComponentProps<typeof N
   )
 }
 
-function NumberFieldInput({ className, ...props }: React.ComponentProps<typeof NumberFieldPrimitive.Input>) {
+function NumberFieldInput({
+  className,
+  ...props
+}: React.ComponentProps<typeof NumberFieldPrimitive.Input>) {
   return (
     <NumberFieldPrimitive.Input
       data-slot="number-field-input"
@@ -37,7 +43,10 @@ function NumberFieldInput({ className, ...props }: React.ComponentProps<typeof N
   )
 }
 
-function NumberFieldDecrement({ className, ...props }: React.ComponentProps<typeof NumberFieldPrimitive.Decrement>) {
+function NumberFieldDecrement({
+  className,
+  ...props
+}: React.ComponentProps<typeof NumberFieldPrimitive.Decrement>) {
   return (
     <NumberFieldPrimitive.Decrement
       data-slot="number-field-decrement"
@@ -55,7 +64,10 @@ function NumberFieldDecrement({ className, ...props }: React.ComponentProps<type
   )
 }
 
-function NumberFieldIncrement({ className, ...props }: React.ComponentProps<typeof NumberFieldPrimitive.Increment>) {
+function NumberFieldIncrement({
+  className,
+  ...props
+}: React.ComponentProps<typeof NumberFieldPrimitive.Increment>) {
   return (
     <NumberFieldPrimitive.Increment
       data-slot="number-field-increment"
@@ -73,7 +85,10 @@ function NumberFieldIncrement({ className, ...props }: React.ComponentProps<type
   )
 }
 
-function NumberFieldScrubArea({ className, ...props }: React.ComponentProps<typeof NumberFieldPrimitive.ScrubArea>) {
+function NumberFieldScrubArea({
+  className,
+  ...props
+}: React.ComponentProps<typeof NumberFieldPrimitive.ScrubArea>) {
   return (
     <NumberFieldPrimitive.ScrubArea
       data-slot="number-field-scrub-area"
@@ -83,7 +98,10 @@ function NumberFieldScrubArea({ className, ...props }: React.ComponentProps<type
   )
 }
 
-function NumberFieldScrubAreaCursor({ className, ...props }: React.ComponentProps<typeof NumberFieldPrimitive.ScrubAreaCursor>) {
+function NumberFieldScrubAreaCursor({
+  className,
+  ...props
+}: React.ComponentProps<typeof NumberFieldPrimitive.ScrubAreaCursor>) {
   return (
     <NumberFieldPrimitive.ScrubAreaCursor
       data-slot="number-field-scrub-area-cursor"

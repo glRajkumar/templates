@@ -1,19 +1,14 @@
-'use client'
-
 import * as React from 'react'
 import { OTPFieldPreview as OTPFieldPrimitive } from '@base-ui/react/otp-field'
 import { MinusIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
-function InputOTP({
-  className,
-  ...props
-}: React.ComponentProps<typeof OTPFieldPrimitive.Root>) {
+function InputOTP({ className, ...props }: React.ComponentProps<typeof OTPFieldPrimitive.Root>) {
   return (
     <OTPFieldPrimitive.Root
       data-slot="input-otp"
-      className={cn('flex items-center data-[disabled]:opacity-50', className)}
+      className={cn('flex items-center data-disabled:opacity-50', className)}
       {...props}
     />
   )
@@ -21,11 +16,7 @@ function InputOTP({
 
 function InputOTPGroup({ className, ...props }: React.ComponentProps<'div'>) {
   return (
-    <div
-      data-slot="input-otp-group"
-      className={cn('flex items-center', className)}
-      {...props}
-    />
+    <div data-slot="input-otp-group" className={cn('flex items-center', className)} {...props} />
   )
 }
 
@@ -117,5 +108,5 @@ export {
   InputOTPSlot,
   InputOTPSeparator,
   InputOTPWrapper,
-  type InputOTPWrapperProps
+  type InputOTPWrapperProps,
 }

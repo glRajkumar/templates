@@ -1,5 +1,3 @@
-'use client'
-
 import { cva, type VariantProps } from 'class-variance-authority'
 import { Tabs as TabsPrimitive } from '@base-ui/react/tabs'
 
@@ -136,8 +134,13 @@ function TabsWrapper({
 }: React.ComponentProps<typeof TabsPrimitive.Root> & tabsWrapperProps) {
   return (
     <Tabs {...props}>
-      <TabsList className={cn(listCls)} variant={variant} activateOnFocus={activateOnFocus} loopFocus={loopFocus}>
-        {tabs.map((tab) => (
+      <TabsList
+        className={cn(listCls)}
+        variant={variant}
+        activateOnFocus={activateOnFocus}
+        loopFocus={loopFocus}
+      >
+        {tabs.map(tab => (
           <TabsTrigger
             key={tab.value}
             value={tab.value}
@@ -149,7 +152,7 @@ function TabsWrapper({
         ))}
       </TabsList>
 
-      {tabs.map((tab) => (
+      {tabs.map(tab => (
         <TabsContent key={tab.value} value={tab.value} className={cn(contentCls, tab.contentCls)}>
           {tab.content}
         </TabsContent>

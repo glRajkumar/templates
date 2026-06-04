@@ -19,9 +19,7 @@ function CheckboxIndicator({ className, ...props }: CheckboxPrimitive.Root.Props
         data-slot="checkbox-indicator"
         className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
         render={(indicatorProps, state) => (
-          <span {...indicatorProps}>
-            {state.indeterminate ? <MinusIcon /> : <CheckIcon />}
-          </span>
+          <span {...indicatorProps}>{state.indeterminate ? <MinusIcon /> : <CheckIcon />}</span>
         )}
       />
     </CheckboxPrimitive.Root>
@@ -35,9 +33,21 @@ type CheckboxProps = {
   as?: React.ElementType
 } & CheckboxPrimitive.Root.Props
 
-function Checkbox({ label, description, wrapperCls, className, as: Comp = 'label', ...props }: CheckboxProps) {
+function Checkbox({
+  label,
+  description,
+  wrapperCls,
+  className,
+  as: Comp = 'label',
+  ...props
+}: CheckboxProps) {
   return (
-    <Comp className={cn('flex cursor-pointer select-none items-start gap-2 has-[:disabled]:cursor-not-allowed', wrapperCls)}>
+    <Comp
+      className={cn(
+        'flex cursor-pointer select-none items-start gap-2 has-[:disabled]:cursor-not-allowed',
+        wrapperCls,
+      )}
+    >
       <CheckboxIndicator className={cn(className)} {...props} />
       <p className="grid">
         <span className="text-sm font-medium leading-none">{label}</span>
@@ -84,9 +94,7 @@ function CheckboxWrapper({
       className={cn(orientation === 'horizontal' && 'flex-row flex-wrap', className)}
       {...props}
     >
-      {parentLabel && (
-        <Checkbox label={parentLabel} wrapperCls={itemCls} data-parent />
-      )}
+      {parentLabel && <Checkbox label={parentLabel} wrapperCls={itemCls} data-parent />}
       {options.map((opt, i) => (
         <Checkbox
           key={getKey(opt, i)}

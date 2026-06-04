@@ -1,13 +1,6 @@
-'use client'
-
-import { useState } from 'react'
-import { CalendarIcon } from 'lucide-react'
-import { format } from 'date-fns'
-
 import { cn, parseAllowedPrimitive } from '@/lib/utils'
 
 import { Field, FieldLabel, FieldSet, FieldLegend, FieldError } from './field'
-import { Popover, PopoverContent, PopoverTrigger } from './popover'
 import { AutocompleteWrapper as Autocomplete } from './autocomplete'
 import { InputGroupWrapper as InputGroup } from './input-group'
 import { InputOTPWrapper as InputOTP } from './input-otp'
@@ -16,10 +9,9 @@ import { CheckboxWrapper as Checkbox } from './checkbox'
 import { SelectWrapper as Select } from './select'
 import { RadioWrapper as Radio } from './radio'
 import { NumberFieldWrapper } from './number-field'
-import { Calendar } from './calendar'
+import { DatePicker } from './date-picker'
 import { Textarea } from './textarea'
 import { Slider } from './slider'
-import { Button } from './button'
 import { Switch } from './switch'
 import { Input } from './input'
 
@@ -226,8 +218,8 @@ export function SelectWrapper({
   )
 }
 
-type DatePickerProps = BaseProps &
-  Omit<React.ComponentProps<typeof Calendar>, 'selected' | 'onSelect'> & {
+type DatePickerFieldProps = BaseProps &
+  Omit<React.ComponentProps<typeof DatePicker>, 'selected' | 'onSelect'> & {
     value?: Date
     onSelect?: (date: Date | undefined) => void
   }
@@ -239,44 +231,19 @@ export function DatePickerWrapper({
   className,
   value,
   onSelect,
-  ...calendarProps
-}: DatePickerProps) {
-  const [open, setOpen] = useState(false)
+  ...pickerProps
+}: DatePickerFieldProps) {
   const isInvalid = invalid || !!error
 
   return (
     <Field className={className} invalid={isInvalid}>
       {label && <FieldLabel htmlFor={name}>{label}</FieldLabel>}
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger
-          render={
-            <Button
-              id={name}
-              variant={'outline'}
-              className={cn('w-full ps-3 text-start font-normal shadow-xs', !value && 'text-muted-foreground')}
-              aria-invalid={isInvalid}
-            >
-              {value ? format(value, 'dd/MM/yyyy') : <span>Pick a date</span>}
-              <CalendarIcon className="ms-auto h-4 w-4 opacity-50" />
-            </Button>
-          }
-        />
-
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            autoFocus
-            mode="single"
-            captionLayout="dropdown"
-            selected={value}
-            onSelect={date => {
-              onSelect?.(date)
-              setOpen(false)
-            }}
-            defaultMonth={value}
-            {...(calendarProps as any)}
-          />
-        </PopoverContent>
-      </Popover>
+      <DatePicker
+        selected={value}
+        onSelect={onSelect}
+        triggerProps={{ id: name, 'aria-invalid': isInvalid }}
+        {...pickerProps}
+      />
       <FieldError errors={[error]} />
     </Field>
   )
@@ -314,14 +281,7 @@ export function ComboboxWrapper({
 
 type NumberProps = BaseProps &
   Omit<React.ComponentProps<typeof NumberFieldWrapper>, 'name' | 'id' | 'className'>
-export function NumberWrapper({
-  name,
-  label,
-  error,
-  invalid,
-  className,
-  ...props
-}: NumberProps) {
+export function NumberWrapper({ name, label, error, invalid, className, ...props }: NumberProps) {
   const isInvalid = invalid || !!error
 
   return (
@@ -333,16 +293,8 @@ export function NumberWrapper({
   )
 }
 
-type SliderProps = BaseProps &
-  Omit<React.ComponentProps<typeof Slider>, 'name'>
-export function SliderWrapper({
-  name,
-  label,
-  error,
-  invalid,
-  className,
-  ...props
-}: SliderProps) {
+type SliderProps = BaseProps & Omit<React.ComponentProps<typeof Slider>, 'name'>
+export function SliderWrapper({ name, label, error, invalid, className, ...props }: SliderProps) {
   const isInvalid = invalid || !!error
 
   return (
@@ -354,8 +306,7 @@ export function SliderWrapper({
   )
 }
 
-type AutocompleteProps = BaseProps &
-  Omit<React.ComponentProps<typeof Autocomplete>, 'className'>
+type AutocompleteProps = BaseProps & Omit<React.ComponentProps<typeof Autocomplete>, 'className'>
 export function AutocompleteWrapper({
   name,
   label,
@@ -376,14 +327,7 @@ export function AutocompleteWrapper({
 }
 
 type OTPProps = BaseProps & Omit<React.ComponentProps<typeof InputOTP>, 'className'>
-export function OTPWrapper({
-  name,
-  label,
-  error,
-  invalid,
-  className,
-  ...props
-}: OTPProps) {
+export function OTPWrapper({ name, label, error, invalid, className, ...props }: OTPProps) {
   const isInvalid = invalid || !!error
 
   return (
@@ -395,7 +339,8 @@ export function OTPWrapper({
   )
 }
 
-type InputGroupFieldProps = BaseProps & Omit<React.ComponentProps<typeof InputGroup>, 'wrapperClassName'>
+type InputGroupFieldProps = BaseProps &
+  Omit<React.ComponentProps<typeof InputGroup>, 'wrapperClassName'>
 export function InputGroupWrapper({
   name,
   label,
@@ -409,12 +354,7 @@ export function InputGroupWrapper({
   return (
     <Field className={className} invalid={isInvalid}>
       {label && <FieldLabel htmlFor={name}>{label}</FieldLabel>}
-      <InputGroup
-        id={name}
-        name={name}
-        aria-invalid={isInvalid}
-        {...props}
-      />
+      <InputGroup id={name} name={name} aria-invalid={isInvalid} {...props} />
       <FieldError errors={[error]} />
     </Field>
   )

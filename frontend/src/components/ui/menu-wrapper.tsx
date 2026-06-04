@@ -1,20 +1,7 @@
-'use client'
-
 import { useState } from 'react'
-import {
-  cn,
-  getKey,
-  getLabel,
-  getValue,
-  isSeparator,
-  parseAllowedPrimitive,
-} from '@/lib/utils'
-import {
-  isSubMenu,
-  isGroupMenu,
-  isInputSubMenu,
-  isInputGroupMenu
-} from '@/lib/menu'
+
+import { cn, getKey, getLabel, getValue, isSeparator, parseAllowedPrimitive } from '@/lib/utils'
+import { isSubMenu, isGroupMenu, isInputSubMenu, isInputGroupMenu } from '@/lib/menu'
 
 import {
   Menu,
@@ -152,9 +139,7 @@ type SubMenuProps = commonSubMenuT & {
 function SubMenu({ submenu, itemCls, groupCls, groupLabelCls, onSelect }: SubMenuProps) {
   return (
     <MenuSub>
-      <MenuSubTrigger className={cn(submenu.triggerCls)}>
-        {submenu.submenu}
-      </MenuSubTrigger>
+      <MenuSubTrigger className={cn(submenu.triggerCls)}>{submenu.submenu}</MenuSubTrigger>
 
       <MenuSubContent className={cn(submenu.contentCls)}>
         {submenu.options.map((option, i) => {
@@ -224,9 +209,7 @@ function CheckboxSubMenu({
 }: CheckboxSubMenuProps) {
   return (
     <MenuSub>
-      <MenuSubTrigger className={cn(submenu.triggerCls)}>
-        {submenu.submenu}
-      </MenuSubTrigger>
+      <MenuSubTrigger className={cn(submenu.triggerCls)}>{submenu.submenu}</MenuSubTrigger>
 
       <MenuSubContent className={cn(submenu.contentCls)}>
         {submenu.options.map((option, i) => {
@@ -252,7 +235,7 @@ function CheckboxSubMenu({
                       checked={checked.includes(v)}
                       className={itemCls}
                       indicatorAt={indicatorAt}
-                      onCheckedChange={(checked) => onCheckedChange?.(v, checked)}
+                      onCheckedChange={checked => onCheckedChange?.(v, checked)}
                     />
                   )
                 })}
@@ -283,7 +266,7 @@ function CheckboxSubMenu({
               checked={checked.includes(v)}
               className={itemCls}
               indicatorAt={indicatorAt}
-              onCheckedChange={(checked) => onCheckedChange?.(v, checked)}
+              onCheckedChange={checked => onCheckedChange?.(v, checked)}
             />
           )
         })}
@@ -307,9 +290,7 @@ function RadioSubMenu({
 }: RadioSubMenuProps) {
   return (
     <MenuSub>
-      <MenuSubTrigger className={cn(submenu.triggerCls)}>
-        {submenu.submenu}
-      </MenuSubTrigger>
+      <MenuSubTrigger className={cn(submenu.triggerCls)}>{submenu.submenu}</MenuSubTrigger>
 
       <MenuSubContent className={cn(submenu.contentCls)}>
         <MenuRadioGroup value={`${value}`} onValueChange={onValueChange}>
@@ -386,7 +367,9 @@ function MenuWrapper({
 }: MenuWrapperProps) {
   return (
     <Menu {...props}>
-      <MenuTrigger className={cn(triggerCls)} {...triggerProps}>{trigger}</MenuTrigger>
+      <MenuTrigger className={cn(triggerCls)} {...triggerProps}>
+        {trigger}
+      </MenuTrigger>
 
       <MenuContent {...contentProps}>
         {options.map((option, i) => {
@@ -463,7 +446,7 @@ function MenuCheckboxWrapper({
   const [i_checked, setIChecked] = useState<allowedPrimitiveT[]>([])
 
   function i_Checked(v: allowedPrimitiveT, c: boolean) {
-    setIChecked((prev) => (!c ? prev.filter((p) => p !== v) : [...prev, v]))
+    setIChecked(prev => (!c ? prev.filter(p => p !== v) : [...prev, v]))
   }
 
   const checked = o_checked ?? i_checked
@@ -471,7 +454,9 @@ function MenuCheckboxWrapper({
 
   return (
     <Menu {...props}>
-      <MenuTrigger className={cn(triggerCls)} {...triggerProps}>{trigger}</MenuTrigger>
+      <MenuTrigger className={cn(triggerCls)} {...triggerProps}>
+        {trigger}
+      </MenuTrigger>
 
       <MenuContent {...contentProps}>
         {options.map((option, i) => {
@@ -497,7 +482,7 @@ function MenuCheckboxWrapper({
                       checked={checked.includes(v)}
                       className={itemCls}
                       indicatorAt={indicatorAt}
-                      onCheckedChange={(checked) => onCheckedChange?.(v, checked)}
+                      onCheckedChange={checked => onCheckedChange?.(v, checked)}
                     />
                   )
                 })}
@@ -528,7 +513,7 @@ function MenuCheckboxWrapper({
               checked={checked.includes(v)}
               className={itemCls}
               indicatorAt={indicatorAt}
-              onCheckedChange={(checked) => onCheckedChange?.(v, checked)}
+              onCheckedChange={checked => onCheckedChange?.(v, checked)}
             />
           )
         })}
@@ -562,12 +547,14 @@ function MenuRadioWrapper({
 
   return (
     <Menu {...props}>
-      <MenuTrigger className={cn(triggerCls)} {...triggerProps}>{trigger}</MenuTrigger>
+      <MenuTrigger className={cn(triggerCls)} {...triggerProps}>
+        {trigger}
+      </MenuTrigger>
 
       <MenuContent {...contentProps}>
         <MenuRadioGroup
           value={`${value}`}
-          onValueChange={(v) => onValueChange(parseAllowedPrimitive(v))}
+          onValueChange={v => onValueChange(parseAllowedPrimitive(v))}
         >
           {options.map((option, i) => {
             if (isInputGroupMenu(option)) {
@@ -605,7 +592,7 @@ function MenuRadioWrapper({
                   groupCls={groupCls}
                   indicatorAt={indicatorAt}
                   groupLabelCls={groupLabelCls}
-                  onValueChange={(v) => onValueChange(parseAllowedPrimitive(v))}
+                  onValueChange={v => onValueChange(parseAllowedPrimitive(v))}
                 />
               )
             }

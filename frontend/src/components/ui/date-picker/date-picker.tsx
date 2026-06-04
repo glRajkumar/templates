@@ -1,0 +1,100 @@
+import * as React from 'react'
+import { type DateRange } from '@daypicker/react'
+import { CalendarIcon } from 'lucide-react'
+
+import { type Selected, formatSelected, getDefaultMonth } from './utils'
+import { cn } from '@/lib/utils'
+
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
+
+import { Calendar } from './calendar'
+
+type DatePickerProps = Omit<
+  React.ComponentProps<typeof Calendar>,
+  'mode' | 'selected' | 'onSelect'
+> & {
+  mode?: 'single' | 'multiple' | 'range'
+  selected?: Selected
+  onSelect?: (...args: any[]) => void
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  placeholder?: string
+  dateFormat?: string
+  triggerProps?: Omit<React.ComponentProps<typeof Button>, 'children'>
+  align?: React.ComponentProps<typeof PopoverContent>['align']
+}
+
+function DatePicker({
+  open: controlledOpen,
+  onOpenChange: onOpenChangeProp,
+  placeholder = 'Pick a date',
+  dateFormat = 'dd/MM/yyyy',
+  triggerProps,
+  align = 'start',
+  mode,
+  selected,
+  onSelect,
+  ...calendarProps
+}: DatePickerProps) {
+  const [internalOpen, setInternalOpen] = React.useState(false)
+  const isControlled = controlledOpen !== undefined
+  const open = isControlled ? controlledOpen : internalOpen
+
+  function handleOpenChange(next: boolean) {
+    if (!isControlled) setInternalOpen(next)
+    onOpenChangeProp?.(next)
+  }
+
+  function handleSelect(...args: any[]) {
+    onSelect?.(...args)
+    const effectiveMode = mode ?? 'single'
+    if (effectiveMode === 'single') {
+      handleOpenChange(false)
+    } else if (effectiveMode === 'range') {
+      const val = args[0] as DateRange | undefined
+      if (val?.from && val?.to) handleOpenChange(false)
+    }
+  }
+
+  const { className: triggerClassName, ...restTriggerProps } = triggerProps ?? {}
+  const label = formatSelected(selected, dateFormat)
+
+  return (
+    <Popover open={open} onOpenChange={handleOpenChange}>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="outline"
+            {...restTriggerProps}
+            className={cn(
+              'w-full ps-3 text-start font-normal shadow-xs',
+              !label && 'text-muted-foreground',
+              triggerClassName,
+            )}
+          >
+            {label ?? <span>{placeholder}</span>}
+            <CalendarIcon className="ms-auto h-4 w-4 opacity-50" aria-hidden="true" />
+          </Button>
+        }
+      />
+
+      <PopoverContent className="w-auto p-0" align={align}>
+        <Calendar
+          {...({
+            autoFocus: true,
+            captionLayout: 'dropdown',
+            defaultMonth: getDefaultMonth(selected),
+            mode: mode ?? 'single',
+            selected,
+            onSelect: handleSelect,
+            ...calendarProps,
+          } as React.ComponentProps<typeof Calendar>)}
+        />
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+export { DatePicker }
+export type { DatePickerProps }

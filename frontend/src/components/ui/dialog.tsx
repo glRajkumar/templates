@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react'
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog'
 import { Loader, XIcon } from 'lucide-react'
@@ -139,7 +137,12 @@ function DialogFooterWrapper({
       {cancel && (
         <DialogClose
           render={
-            <Button variant="outline" onClick={onCancel} className={cn(cancelCls)} disabled={loading} />
+            <Button
+              variant="outline"
+              onClick={onCancel}
+              className={cn(cancelCls)}
+              disabled={loading}
+            />
           }
         >
           {cancel}

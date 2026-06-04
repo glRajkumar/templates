@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react'
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from 'lucide-react'
 import { Select as SelectPrimitive } from '@base-ui/react/select'
@@ -40,7 +38,9 @@ function SelectTrigger({ className, children, ...props }: SelectPrimitive.Trigge
     >
       {children}
       <SelectPrimitive.Icon
-        render={<span className="flex size-7 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground" />}
+        render={
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground" />
+        }
       >
         <ChevronDownIcon className="size-4" />
       </SelectPrimitive.Icon>
@@ -204,7 +204,12 @@ function Item({ option, className, indicatorAt }: itemProps) {
   if (isSeparator(value)) return <SelectSeparator className={className} />
 
   return (
-    <SelectItem value={`${value}`} className={cn(className, optCls)} indicatorAt={indicatorAt} disabled={disabled}>
+    <SelectItem
+      value={`${value}`}
+      className={cn(className, optCls)}
+      indicatorAt={indicatorAt}
+      disabled={disabled}
+    >
       {label}
     </SelectItem>
   )
@@ -274,7 +279,10 @@ function SelectWrapper({
             if (!value || (Array.isArray(value) && !value.length)) return placeholder
             if (Array.isArray(value)) {
               return value.map(v => (
-                <span key={v} className="inline-flex items-center rounded-sm bg-secondary px-1.5 py-1 text-xs font-medium text-secondary-foreground whitespace-nowrap">
+                <span
+                  key={v}
+                  className="inline-flex items-center rounded-sm bg-secondary px-1.5 py-1 text-xs font-medium text-secondary-foreground whitespace-nowrap"
+                >
                   {renderValue ? renderValue(v, optionMap[v]) : (labelMap[v] ?? v)}
                 </span>
               ))

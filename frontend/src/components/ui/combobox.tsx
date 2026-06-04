@@ -2,7 +2,16 @@ import * as React from 'react'
 import { ChevronDownIcon, XIcon, CheckIcon, Loader2 } from 'lucide-react'
 import { Combobox as ComboboxPrimitive } from '@base-ui/react'
 
-import { cn, extractText, getKey, getLabel, getValue, isGroup, isOption, isSeparator } from '@/lib/utils'
+import {
+  cn,
+  extractText,
+  getKey,
+  getLabel,
+  getValue,
+  isGroup,
+  isOption,
+  isSeparator,
+} from '@/lib/utils'
 
 const ComboboxRoot = ComboboxPrimitive.Root
 
@@ -28,11 +37,7 @@ function ComboboxIcon({ className, ...props }: ComboboxPrimitive.Icon.Props) {
 
 function ComboboxTrigger({ className, children, ...props }: ComboboxPrimitive.Trigger.Props) {
   return (
-    <ComboboxPrimitive.Trigger
-      data-slot="combobox-trigger"
-      className={cn(className)}
-      {...props}
-    >
+    <ComboboxPrimitive.Trigger data-slot="combobox-trigger" className={cn(className)} {...props}>
       {children}
     </ComboboxPrimitive.Trigger>
   )
@@ -87,7 +92,11 @@ function ComboboxInput({
       />
       <div className="flex shrink-0 items-center ms-auto">
         {showClear && <ComboboxClear disabled={disabled} />}
-        {showTrigger && <ComboboxTrigger disabled={disabled}><ComboboxIcon /></ComboboxTrigger>}
+        {showTrigger && (
+          <ComboboxTrigger disabled={disabled}>
+            <ComboboxIcon />
+          </ComboboxTrigger>
+        )}
       </div>
       {children}
     </ComboboxPrimitive.InputGroup>
@@ -150,7 +159,12 @@ function ComboboxList({ className, ...props }: ComboboxPrimitive.List.Props) {
   )
 }
 
-function ComboboxItem({ className, children, indicatorAt, ...props }: ComboboxPrimitive.Item.Props & { indicatorAt?: indicatorAtT }) {
+function ComboboxItem({
+  className,
+  children,
+  indicatorAt,
+  ...props
+}: ComboboxPrimitive.Item.Props & { indicatorAt?: indicatorAtT }) {
   return (
     <ComboboxPrimitive.Item
       data-slot="combobox-item"
@@ -221,7 +235,10 @@ function ComboboxSeparator({ className, ...props }: ComboboxPrimitive.Separator.
   )
 }
 
-function ComboboxChips({ className, ...props }: React.ComponentPropsWithRef<typeof ComboboxPrimitive.Chips> & ComboboxPrimitive.Chips.Props) {
+function ComboboxChips({
+  className,
+  ...props
+}: React.ComponentPropsWithRef<typeof ComboboxPrimitive.Chips> & ComboboxPrimitive.Chips.Props) {
   return (
     <ComboboxPrimitive.Chips
       data-slot="combobox-chips"
@@ -314,7 +331,12 @@ function OptionItem({ option, className, indicatorAt }: OptionItemProps) {
   const disabled = isOption(option) ? option.disabled : undefined
 
   return (
-    <ComboboxItem value={value} className={cn(className, optCls)} indicatorAt={indicatorAt} disabled={disabled}>
+    <ComboboxItem
+      value={value}
+      className={cn(className, optCls)}
+      indicatorAt={indicatorAt}
+      disabled={disabled}
+    >
       {label}
     </ComboboxItem>
   )
@@ -427,7 +449,8 @@ function ComboboxWrapper<Value, Multiple extends boolean | undefined = false>({
             const key = String(val)
             const label = getLabel(o)
             labelMap[key] = label
-            labelStringMap[key] = typeof label === 'string' ? label : (extractText(label).trim() || key)
+            labelStringMap[key] =
+              typeof label === 'string' ? label : extractText(label).trim() || key
             optionMap[key] = o
           }
         }
@@ -439,7 +462,7 @@ function ComboboxWrapper<Value, Multiple extends boolean | undefined = false>({
 
   const itemsForBase = React.useMemo(() => {
     if (!items) return []
-    return items.map(item => isGroup(item) ? { ...item, items: item.options } : item)
+    return items.map(item => (isGroup(item) ? { ...item, items: item.options } : item))
   }, [items])
 
   const hasPopupInput = !multiple && !!renderValue
@@ -449,7 +472,7 @@ function ComboboxWrapper<Value, Multiple extends boolean | undefined = false>({
       multiple={multiple}
       disabled={disabled}
       items={itemsForBase as unknown[]}
-      itemToStringLabel={(item) => {
+      itemToStringLabel={item => {
         const key = String(getValue(item as allowedPrimitiveT | optionT))
         if (getItemLabel) return getItemLabel(key)
         return labelStringMap[key] ?? key
@@ -465,21 +488,20 @@ function ComboboxWrapper<Value, Multiple extends boolean | undefined = false>({
                   <ComboboxChip key={String(v)}>
                     {renderValue
                       ? renderValue(String(v), optionMap[String(v)])
-                      : (labelMap[String(v)] ?? String(v))
-                    }
+                      : (labelMap[String(v)] ?? String(v))}
                   </ComboboxChip>
                 ))}
 
-                <ComboboxChipsInput
-                  placeholder={placeholder}
-                  disabled={disabled}
-                  {...inputProps}
-                />
+                <ComboboxChipsInput placeholder={placeholder} disabled={disabled} {...inputProps} />
 
                 {(showClear || showTrigger) && (
                   <div className="flex shrink-0 items-center ms-auto">
                     {showClear && <ComboboxClear disabled={disabled} />}
-                    {showTrigger && <ComboboxTrigger disabled={disabled}><ComboboxIcon /></ComboboxTrigger>}
+                    {showTrigger && (
+                      <ComboboxTrigger disabled={disabled}>
+                        <ComboboxIcon />
+                      </ComboboxTrigger>
+                    )}
                   </div>
                 )}
               </>
@@ -499,14 +521,17 @@ function ComboboxWrapper<Value, Multiple extends boolean | undefined = false>({
           nativeButton={false}
         >
           <ComboboxValue>
-            {(v => (
+            {v => (
               <>
-                {!v ? <span className=' text-muted-foreground'>{placeholder}</span> : renderValue
-                  ? renderValue(String(v), optionMap[String(v)])
-                  : (labelMap[String(v)] ?? String(v))
-                }
+                {!v ? (
+                  <span className=" text-muted-foreground">{placeholder}</span>
+                ) : renderValue ? (
+                  renderValue(String(v), optionMap[String(v)])
+                ) : (
+                  (labelMap[String(v)] ?? String(v))
+                )}
               </>
-            ))}
+            )}
           </ComboboxValue>
 
           <div className="flex shrink-0 items-center ms-auto">
@@ -525,9 +550,11 @@ function ComboboxWrapper<Value, Multiple extends boolean | undefined = false>({
         />
       )}
 
-      <ComboboxContent anchor={multiple ? multiAnchor : undefined} className={cn(contentCls, hideList && "hidden")}>
-        {
-          hasPopupInput &&
+      <ComboboxContent
+        anchor={multiple ? multiAnchor : undefined}
+        className={cn(contentCls, hideList && 'hidden')}
+      >
+        {hasPopupInput && (
           <div className="px-2 pt-2">
             <ComboboxInput
               disabled={disabled}
@@ -537,18 +564,22 @@ function ComboboxWrapper<Value, Multiple extends boolean | undefined = false>({
               {...inputProps}
             />
           </div>
-        }
+        )}
 
         <ComboboxStatus>
           {renderStatus !== undefined
             ? renderStatus
-            : isLoading && <p className='flex items-center justify-center gap-2 py-6'><Loader2 className='size-4 animate-spin' /> Loading...</p>}
+            : isLoading && (
+                <p className="flex items-center justify-center gap-2 py-6">
+                  <Loader2 className="size-4 animate-spin" /> Loading...
+                </p>
+              )}
         </ComboboxStatus>
 
         <ComboboxEmpty>
           {renderEmpty !== undefined
             ? renderEmpty
-            : !isLoading && <p className='py-6'>{emptyMessage ?? 'No options found'}</p>}
+            : !isLoading && <p className="py-6">{emptyMessage ?? 'No options found'}</p>}
         </ComboboxEmpty>
 
         <ComboboxList>

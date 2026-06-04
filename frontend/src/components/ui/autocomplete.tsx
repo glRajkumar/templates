@@ -2,11 +2,24 @@ import * as React from 'react'
 import { ChevronDownIcon, XIcon, Loader2 } from 'lucide-react'
 import { Autocomplete as AutocompletePrimitive } from '@base-ui/react/autocomplete'
 
-import { cn, extractText, getKey, getLabel, getValue, isGroup, isOption, isSeparator } from '@/lib/utils'
+import {
+  cn,
+  extractText,
+  getKey,
+  getLabel,
+  getValue,
+  isGroup,
+  isOption,
+  isSeparator,
+} from '@/lib/utils'
 
 const AutocompleteRoot = AutocompletePrimitive.Root
 
-function AutocompleteTrigger({ className, children, ...props }: AutocompletePrimitive.Trigger.Props) {
+function AutocompleteTrigger({
+  className,
+  children,
+  ...props
+}: AutocompletePrimitive.Trigger.Props) {
   return (
     <AutocompletePrimitive.Trigger
       data-slot="autocomplete-trigger"
@@ -129,11 +142,7 @@ function AutocompleteList({ className, ...props }: AutocompletePrimitive.List.Pr
   )
 }
 
-function AutocompleteItem({
-  className,
-  children,
-  ...props
-}: AutocompletePrimitive.Item.Props) {
+function AutocompleteItem({ className, children, ...props }: AutocompletePrimitive.Item.Props) {
   return (
     <AutocompletePrimitive.Item
       data-slot="autocomplete-item"
@@ -240,11 +249,7 @@ function OptionsBody({ item, index, itemCls, groupCls }: OptionsBodyProps) {
         <AutocompleteLabel>{item.group}</AutocompleteLabel>
         <AutocompleteCollection>
           {(opt: allowedPrimitiveT | optionT, i) => (
-            <OptionItem
-              key={getKey(opt, i)}
-              option={opt}
-              className={itemCls}
-            />
+            <OptionItem key={getKey(opt, i)} option={opt} className={itemCls} />
           )}
         </AutocompleteCollection>
       </AutocompleteGroup>
@@ -329,13 +334,17 @@ function AutocompleteWrapper({
         <AutocompleteStatus>
           {renderStatus !== undefined
             ? renderStatus
-            : isLoading && <p className='flex items-center justify-center gap-2 py-6'><Loader2 className='size-4 animate-spin' /> Loading...</p>}
+            : isLoading && (
+              <p className="flex items-center justify-center gap-2 py-6">
+                <Loader2 className="size-4 animate-spin" /> Loading...
+              </p>
+            )}
         </AutocompleteStatus>
 
         <AutocompleteEmpty>
           {renderEmpty !== undefined
             ? renderEmpty
-            : !isLoading && <p className='py-6'>{emptyMessage ?? 'No options found'}</p>}
+            : !isLoading && <p className="py-6">{emptyMessage ?? 'No options found'}</p>}
         </AutocompleteEmpty>
 
         <AutocompleteList>

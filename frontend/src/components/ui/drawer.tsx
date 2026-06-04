@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react'
 import { Drawer as DrawerPrimitive } from '@base-ui/react/drawer'
 import { Loader } from 'lucide-react'
@@ -138,8 +136,8 @@ function DrawerFooterWrapper({
   footerCls,
   actionCls,
   cancelCls,
-  onAction = () => {},
-  onCancel = () => {},
+  onAction = () => { },
+  onCancel = () => { },
 }: DrawerFooterWrapperProps) {
   return (
     <DrawerFooter className={cn(footerCls)}>
@@ -167,7 +165,10 @@ type DrawerWrapperProps = {
   title?: React.ReactNode
   trigger?: React.ReactNode
   triggerCls?: string
-  triggerProps?: Omit<React.ComponentProps<typeof DrawerPrimitive.Trigger>, 'children' | 'className'>
+  triggerProps?: Omit<
+    React.ComponentProps<typeof DrawerPrimitive.Trigger>,
+    'children' | 'className'
+  >
   children?: React.ReactNode
   description?: React.ReactNode
   descriptionCls?: string

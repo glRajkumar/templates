@@ -1,5 +1,3 @@
-'use client'
-
 import * as React from 'react'
 import { Dialog as SheetPrimitive } from '@base-ui/react/dialog'
 import { Loader, XIcon } from 'lucide-react'
@@ -132,15 +130,20 @@ function SheetFooterWrapper({
   footerCls,
   actionCls,
   cancelCls,
-  onAction = () => {},
-  onCancel = () => {},
+  onAction = () => { },
+  onCancel = () => { },
 }: SheetFooterWrapperProps) {
   return (
     <SheetFooter className={footerCls}>
       {cancel && (
         <SheetClose
           render={
-            <Button variant="secondary" onClick={onCancel} className={cn('border', cancelCls)} disabled={loading} />
+            <Button
+              variant="secondary"
+              onClick={onCancel}
+              className={cn('border', cancelCls)}
+              disabled={loading}
+            />
           }
         >
           {cancel}
