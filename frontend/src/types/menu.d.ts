@@ -1,7 +1,7 @@
-type menuOptionT =
+type menuItemT =
   | allowedPrimitiveT
-  | optionT
-  | (optionT & {
+  | itemT
+  | (itemT & {
       variant?: 'default' | 'destructive'
       shortcut?: string
       disabled?: boolean
@@ -9,39 +9,39 @@ type menuOptionT =
 
 type menuGroupT = {
   group: string
-  options: menuOptionT[]
+  items: menuItemT[]
   className?: string
   groupLabelCls?: string
 }
 
 type subMenuT = {
   submenu: string
-  options: (menuOptionT | menuGroupT)[]
+  items: (menuItemT | menuGroupT)[]
   triggerCls?: string
   contentCls?: string
 }
 
-type menuOptionsT = (menuOptionT | menuGroupT | subMenuT)[]
+type menuItemsT = (menuItemT | menuGroupT | subMenuT)[]
 
-type menuInputOptionT =
+type menuInputItemT =
   | allowedPrimitiveT
-  | optionT
-  | (optionT & {
+  | itemT
+  | (itemT & {
       disabled?: boolean
     })
 
 type menuInputGroupT = {
   group: string
-  options: menuInputOptionT[]
+  items: menuInputItemT[]
   className?: string
   groupLabelCls?: string
 }
 
 type inputSubMenuT = {
   submenu: string
-  options: (menuInputOptionT | menuInputGroupT)[]
+  items: (menuInputItemT | menuInputGroupT)[]
   triggerCls?: string
   contentCls?: string
 }
 
-type menuInputOptionsT = (menuInputOptionT | menuInputGroupT | inputSubMenuT)[]
+type menuInputItemsT = (menuInputItemT | menuInputGroupT | inputSubMenuT)[]

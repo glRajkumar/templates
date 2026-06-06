@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from 'lucide-react'
 import { Select as SelectPrimitive } from '@base-ui/react/select'
@@ -123,7 +125,7 @@ function SelectItem({
       className={cn(
         "relative flex w-full cursor-default items-center gap-1.5 rounded-md py-1.5 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className,
-        indicatorAt === 'right' ? 'pe-8 ps-2' : 'pe-2 ps-8',
+        indicatorAt === '' ? 'px-2' : indicatorAt === 'right' ? 'pr-8 pl-2' : 'pr-2 pl-8',
       )}
       {...props}
     >
@@ -131,14 +133,16 @@ function SelectItem({
         {children}
       </SelectPrimitive.ItemText>
 
-      <SelectPrimitive.ItemIndicator
-        className={cn(
-          'pointer-events-none absolute flex size-4 items-center justify-center',
-          indicatorAt === 'right' ? 'end-2' : 'start-2',
-        )}
-      >
-        <CheckIcon className="pointer-events-none" />
-      </SelectPrimitive.ItemIndicator>
+      {indicatorAt !== '' && (
+        <SelectPrimitive.ItemIndicator
+          className={cn(
+            'pointer-events-none absolute flex size-4 items-center justify-center',
+            indicatorAt === 'right' ? 'end-2' : 'start-2',
+          )}
+        >
+          <CheckIcon className="pointer-events-none" />
+        </SelectPrimitive.ItemIndicator>
+      )}
     </SelectPrimitive.Item>
   )
 }
@@ -190,16 +194,16 @@ function SelectScrollDownButton({
 }
 
 type itemProps = {
-  option: allowedPrimitiveT | optionT
+  item: allowedPrimitiveT | itemT
   className?: string
   indicatorAt?: indicatorAtT
 }
 
-function Item({ option, className, indicatorAt }: itemProps) {
-  const value = getValue(option)
-  const label = getLabel(option)
-  const optCls = isOption(option) ? option.className : undefined
-  const disabled = isOption(option) ? option.disabled : undefined
+function Item({ item, className, indicatorAt }: itemProps) {
+  const value = getValue(item)
+  const label = getLabel(item)
+  const optCls = isOption(item) ? item.className : undefined
+  const disabled = isOption(item) ? item.disabled : undefined
 
   if (isSeparator(value)) return <SelectSeparator className={className} />
 
@@ -217,7 +221,7 @@ function Item({ option, className, indicatorAt }: itemProps) {
 
 type selectProps = {
   id?: string
-  options: optionsT
+  items: itemsT
   placeholder?: string
   indicatorAt?: indicatorAtT
   backdrop?: boolean
@@ -226,11 +230,11 @@ type selectProps = {
   groupCls?: string
   groupLabelCls?: string
   itemCls?: string
-  renderValue?: (value: string, option: allowedPrimitiveT | optionT | undefined) => React.ReactNode
-} & React.ComponentProps<typeof SelectPrimitive.Root>
+  renderValue?: (value: string, option: allowedPrimitiveT | itemT | undefined) => React.ReactNode
+} & Omit<React.ComponentProps<typeof SelectPrimitive.Root>, 'items'>
 function SelectWrapper({
   id,
-  options,
+  items,
   placeholder,
   indicatorAt,
   backdrop,
@@ -244,13 +248,13 @@ function SelectWrapper({
 }: selectProps) {
   const { labelMap, optionMap } = React.useMemo(() => {
     const labelMap: Record<string, React.ReactNode> = {}
-    const optionMap: Record<string, allowedPrimitiveT | optionT> = {}
-    const process = (opts: optionsT) => {
+    const optionMap: Record<string, allowedPrimitiveT | itemT> = {}
+    const process = (opts: itemsT) => {
       for (const opt of opts) {
         if (isGroup(opt)) {
-          process(opt.options as optionsT)
+          process(opt.items as itemsT)
         } else {
-          const o = opt as allowedPrimitiveT | optionT
+          const o = opt as allowedPrimitiveT | itemT
           const val = getValue(o)
           if (!isSeparator(val)) {
             const key = String(val)
@@ -260,9 +264,9 @@ function SelectWrapper({
         }
       }
     }
-    process(options)
+    process(items)
     return { labelMap, optionMap }
-  }, [options])
+  }, [items])
 
   return (
     <Select {...props}>
@@ -294,16 +298,16 @@ function SelectWrapper({
       </SelectTrigger>
 
       <SelectContent backdrop={backdrop} className={cn(contentCls)}>
-        {options.map((option, i) => {
-          if (isGroup(option)) {
+        {items.map((item, i) => {
+          if (isGroup(item)) {
             return (
-              <SelectGroup key={option.group} className={cn(groupCls, option.className)}>
-                <SelectLabel className={cn('pb-0.5', groupLabelCls)}>{option.group}</SelectLabel>
+              <SelectGroup key={item.group} className={cn(groupCls, item.className)}>
+                <SelectLabel className={cn('pb-0.5', groupLabelCls)}>{item.group}</SelectLabel>
 
-                {option.options.map((grOpts, j) => (
+                {item.items.map((grOpts, j) => (
                   <Item
                     key={getKey(grOpts, j)}
-                    option={grOpts}
+                    item={grOpts}
                     className={cn('ps-4', itemCls)}
                     indicatorAt={indicatorAt}
                   />
@@ -314,8 +318,8 @@ function SelectWrapper({
 
           return (
             <Item
-              key={getKey(option, i)}
-              option={option}
+              key={getKey(item, i)}
+              item={item}
               className={itemCls}
               indicatorAt={indicatorAt}
             />

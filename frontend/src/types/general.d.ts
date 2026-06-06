@@ -1,6 +1,6 @@
 type allowedPrimitiveT = string | number | boolean
 
-type optionT = {
+type itemT = {
   label: React.ReactNode
   value: allowedPrimitiveT
   className?: string
@@ -9,10 +9,10 @@ type optionT = {
 
 type groupT = {
   group: string
-  options: (allowedPrimitiveT | optionT)[]
+  items: (allowedPrimitiveT | itemT)[]
   className?: string
 }
 
-type optionsT = (allowedPrimitiveT | optionT | groupT)[]
+type itemsT = (allowedPrimitiveT | itemT | groupT)[]
 
-type indicatorAtT = 'right' | 'left'
+type indicatorAtT = 'right' | 'left' | ''

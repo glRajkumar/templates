@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { CheckboxGroup as CheckboxGroupPrimitive } from '@base-ui/react/checkbox-group'
 import { Checkbox as CheckboxPrimitive } from '@base-ui/react/checkbox'
@@ -67,26 +69,26 @@ function CheckboxGroup({ className, ...props }: CheckboxGroupPrimitive.Props) {
   )
 }
 
-type checkboxOptionT = allowedPrimitiveT | (optionT & { description?: React.ReactNode })
+type checkboxItemT = allowedPrimitiveT | (itemT & { description?: React.ReactNode })
 
 type CheckboxWrapperProps = {
-  options: checkboxOptionT[]
+  as?: React.ElementType
+  items: checkboxItemT[]
+  itemCls?: string
   parentLabel?: React.ReactNode
   orientation?: 'horizontal' | 'vertical'
-  itemCls?: string
-  as?: React.ElementType
 } & Omit<CheckboxGroupPrimitive.Props, 'children'>
 
 function CheckboxWrapper({
-  options,
-  parentLabel,
-  orientation = 'vertical',
+  as,
+  items,
   itemCls,
   className,
-  as,
+  parentLabel,
+  orientation = 'vertical',
   ...props
 }: CheckboxWrapperProps) {
-  const allValues = options.map(opt => String(getValue(opt)))
+  const allValues = items.map(opt => String(getValue(opt)))
 
   return (
     <CheckboxGroup
@@ -95,7 +97,7 @@ function CheckboxWrapper({
       {...props}
     >
       {parentLabel && <Checkbox label={parentLabel} wrapperCls={itemCls} data-parent />}
-      {options.map((opt, i) => (
+      {items.map((opt, i) => (
         <Checkbox
           key={getKey(opt, i)}
           value={String(getValue(opt))}
@@ -116,6 +118,6 @@ export {
   CheckboxGroup,
   CheckboxWrapper,
   type CheckboxProps,
-  type checkboxOptionT,
+  type checkboxItemT,
   type CheckboxWrapperProps,
 }

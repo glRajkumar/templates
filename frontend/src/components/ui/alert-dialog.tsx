@@ -175,8 +175,8 @@ function AlertDialogFooterWrapper({
   footerCls,
   actionCls,
   cancelCls,
-  onAction = () => { },
-  onCancel = () => { },
+  onAction = () => {},
+  onCancel = () => {},
 }: AlertDialogFooterWrapperProps) {
   return (
     <AlertDialogFooter className={cn(footerCls)}>

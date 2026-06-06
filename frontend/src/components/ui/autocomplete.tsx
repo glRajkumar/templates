@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { ChevronDownIcon, XIcon, Loader2 } from 'lucide-react'
 import { Autocomplete as AutocompletePrimitive } from '@base-ui/react/autocomplete'
@@ -215,7 +217,7 @@ function AutocompleteStatus({ className, ...props }: AutocompletePrimitive.Statu
 }
 
 type OptionItemProps = {
-  option: allowedPrimitiveT | optionT
+  option: allowedPrimitiveT | itemT
   className?: string
 }
 
@@ -233,7 +235,7 @@ function OptionItem({ option, className }: OptionItemProps) {
 }
 
 type OptionsBodyProps = {
-  item: optionsT[number]
+  item: itemsT[number]
   index: number
   itemCls?: string
   groupCls?: string
@@ -243,12 +245,12 @@ function OptionsBody({ item, index, itemCls, groupCls }: OptionsBodyProps) {
   if (isGroup(item)) {
     return (
       <AutocompleteGroup
-        items={item.options as (allowedPrimitiveT | optionT)[]}
+        items={item.items as (allowedPrimitiveT | itemT)[]}
         className={cn(groupCls, item.className)}
       >
         <AutocompleteLabel>{item.group}</AutocompleteLabel>
         <AutocompleteCollection>
-          {(opt: allowedPrimitiveT | optionT, i) => (
+          {(opt: allowedPrimitiveT | itemT, i) => (
             <OptionItem key={getKey(opt, i)} option={opt} className={itemCls} />
           )}
         </AutocompleteCollection>
@@ -262,8 +264,8 @@ function OptionsBody({ item, index, itemCls, groupCls }: OptionsBodyProps) {
 
   return (
     <OptionItem
-      key={getKey(item as allowedPrimitiveT | optionT, index)}
-      option={item as allowedPrimitiveT | optionT}
+      key={getKey(item as allowedPrimitiveT | itemT, index)}
+      option={item as allowedPrimitiveT | itemT}
       className={itemCls}
     />
   )
@@ -273,7 +275,7 @@ type AutocompleteWrapperProps = Omit<
   AutocompletePrimitive.Root.Props<unknown>,
   'items' | 'itemToStringValue'
 > & {
-  items?: optionsT
+  items?: itemsT
   className?: string
   placeholder?: string
   isLoading?: boolean
@@ -305,17 +307,12 @@ function AutocompleteWrapper({
   disabled,
   ...props
 }: AutocompleteWrapperProps) {
-  const itemsForBase = React.useMemo(() => {
-    if (!items) return []
-    return items.map(item => (isGroup(item) ? { ...item, items: item.options } : item))
-  }, [items])
-
   return (
     <AutocompleteRoot
-      items={itemsForBase as unknown[]}
+      items={(items ?? []) as unknown[]}
       disabled={disabled}
       itemToStringValue={(item: unknown) => {
-        const opt = item as allowedPrimitiveT | optionT
+        const opt = item as allowedPrimitiveT | itemT
         const label = getLabel(opt)
         if (typeof label === 'string') return label
         return extractText(label).trim() || String(getValue(opt))
@@ -335,10 +332,10 @@ function AutocompleteWrapper({
           {renderStatus !== undefined
             ? renderStatus
             : isLoading && (
-              <p className="flex items-center justify-center gap-2 py-6">
-                <Loader2 className="size-4 animate-spin" /> Loading...
-              </p>
-            )}
+                <p className="flex items-center justify-center gap-2 py-6">
+                  <Loader2 className="size-4 animate-spin" /> Loading...
+                </p>
+              )}
         </AutocompleteStatus>
 
         <AutocompleteEmpty>
@@ -351,13 +348,13 @@ function AutocompleteWrapper({
           {(item: unknown, i: number) => (
             <OptionsBody
               key={
-                isGroup(item as optionsT[number])
+                isGroup(item as itemsT[number])
                   ? (item as groupT).group
-                  : isSeparator(item as optionsT[number])
+                  : isSeparator(item as itemsT[number])
                     ? `sep-${i}`
-                    : String(getValue(item as allowedPrimitiveT | optionT))
+                    : String(getValue(item as allowedPrimitiveT | itemT))
               }
-              item={item as optionsT[number]}
+              item={item as itemsT[number]}
               index={i}
               itemCls={itemCls}
               groupCls={groupCls}

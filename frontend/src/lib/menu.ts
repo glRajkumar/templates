@@ -1,6 +1,6 @@
-import { optionTypeChecker } from './utils'
+import { itemTypeChecker } from './utils'
 
-export const isSubMenu = optionTypeChecker<subMenuT>('submenu')
-export const isGroupMenu = optionTypeChecker<menuGroupT>('group')
-export const isInputSubMenu = optionTypeChecker<inputSubMenuT>('submenu')
-export const isInputGroupMenu = optionTypeChecker<menuInputGroupT>('group')
+export const isSubMenu = itemTypeChecker<subMenuT>('submenu')
+export const isGroupMenu = itemTypeChecker<menuGroupT>('group')
+export const isInputSubMenu = itemTypeChecker<inputSubMenuT>('submenu')
+export const isInputGroupMenu = itemTypeChecker<menuInputGroupT>('group')

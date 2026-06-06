@@ -43,7 +43,7 @@ function AccordionTrigger({
   indicatorAt?: indicatorAtT
   headerProps?: AccordionPrimitive.Header.Props
 }) {
-  const icon = (
+  const icon = indicatorAt !== '' && (
     <ChevronDownIcon
       data-slot="accordion-trigger-icon"
       className={cn(

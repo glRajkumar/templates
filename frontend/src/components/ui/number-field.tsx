@@ -16,7 +16,7 @@ function NumberFieldGroup({
         'flex h-9 w-full items-center rounded-md border border-input bg-transparent text-sm shadow-xs transition-colors',
         'focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
         'has-aria-invalid:border-destructive has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20',
-        'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        'data-disabled:pointer-events-none data-disabled:opacity-50',
         'dark:bg-input/30 dark:has-aria-invalid:border-destructive/50 dark:has-aria-invalid:ring-destructive/40',
         className,
       )}

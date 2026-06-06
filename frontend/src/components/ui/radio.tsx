@@ -25,10 +25,10 @@ function RadioIndicator({ className, ...props }: RadioPrimitive.Root.Props) {
 }
 
 type RadioProps = {
-  label: React.ReactNode
-  description?: React.ReactNode
-  wrapperCls?: string
   as?: React.ElementType
+  label: React.ReactNode
+  wrapperCls?: string
+  description?: React.ReactNode
 } & RadioPrimitive.Root.Props
 
 function Radio({
@@ -65,17 +65,17 @@ function RadioGroup({ className, ...props }: RadioGroupPrimitive.Props) {
   )
 }
 
-type radioOptionT = allowedPrimitiveT | (optionT & { description?: React.ReactNode })
+type radioItemT = allowedPrimitiveT | (itemT & { description?: React.ReactNode })
 
 type RadioWrapperProps = {
-  options: radioOptionT[]
-  orientation?: 'horizontal' | 'vertical'
-  itemCls?: string
   as?: React.ElementType
+  items: radioItemT[]
+  itemCls?: string
+  orientation?: 'horizontal' | 'vertical'
 } & Omit<RadioGroupPrimitive.Props, 'children'>
 
 function RadioWrapper({
-  options,
+  items,
   orientation = 'vertical',
   itemCls,
   className,
@@ -87,7 +87,7 @@ function RadioWrapper({
       className={cn(orientation === 'horizontal' && 'flex-row flex-wrap', className)}
       {...props}
     >
-      {options.map((opt, i) => (
+      {items.map((opt, i) => (
         <Radio
           key={getKey(opt, i)}
           value={String(getValue(opt))}
@@ -108,6 +108,6 @@ export {
   RadioGroup,
   RadioWrapper,
   type RadioProps,
-  type radioOptionT,
+  type radioItemT,
   type RadioWrapperProps,
 }

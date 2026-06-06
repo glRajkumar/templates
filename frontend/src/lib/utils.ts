@@ -22,20 +22,20 @@ export function parseAllowedPrimitive(value: allowedPrimitiveT): allowedPrimitiv
   return trimmed
 }
 
-export function optionTypeChecker<T>(key: keyof T) {
+export function itemTypeChecker<T>(key: keyof T) {
   return (option: any): option is T => !!option && typeof option === 'object' && key in option
 }
 
 export const isSeparator = (item: any) => item === '---'
-export const isOption = optionTypeChecker<optionT>('value')
-export const isGroup = optionTypeChecker<groupT>('group')
+export const isOption = itemTypeChecker<itemT>('value')
+export const isGroup = itemTypeChecker<groupT>('group')
 
-export const getValue = (item: allowedPrimitiveT | optionT) =>
+export const getValue = (item: allowedPrimitiveT | itemT) =>
   typeof item === 'object' ? item.value : item
-export const getLabel = (item: allowedPrimitiveT | optionT) =>
+export const getLabel = (item: allowedPrimitiveT | itemT) =>
   typeof item === 'object' ? item.label : `${item}`
 
-export function getKey(item: allowedPrimitiveT | optionT, i: number): string {
+export function getKey(item: allowedPrimitiveT | itemT, i: number): string {
   const val = getValue(item)
   if (typeof val === 'boolean') return `key-${val}`
   if (val === '---') return `---${i}`

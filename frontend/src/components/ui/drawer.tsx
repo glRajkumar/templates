@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { Drawer as DrawerPrimitive } from '@base-ui/react/drawer'
 import { Loader } from 'lucide-react'
@@ -136,8 +138,8 @@ function DrawerFooterWrapper({
   footerCls,
   actionCls,
   cancelCls,
-  onAction = () => { },
-  onCancel = () => { },
+  onAction = () => {},
+  onCancel = () => {},
 }: DrawerFooterWrapperProps) {
   return (
     <DrawerFooter className={cn(footerCls)}>

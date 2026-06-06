@@ -160,8 +160,8 @@ function ComboboxList({ className, ...props }: ComboboxPrimitive.List.Props) {
 }
 
 function ComboboxItem({
-  className,
   children,
+  className,
   indicatorAt,
   ...props
 }: ComboboxPrimitive.Item.Props & { indicatorAt?: indicatorAtT }) {
@@ -174,19 +174,21 @@ function ComboboxItem({
         'data-disabled:pointer-events-none data-disabled:opacity-50',
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
-        indicatorAt === 'right' ? 'ps-2 pe-8' : 'ps-8 pe-2',
+        indicatorAt === '' ? 'px-2' : indicatorAt === 'right' ? 'pl-2 pr-8' : 'pl-8 pr-2',
       )}
       {...props}
     >
       {children}
-      <ComboboxPrimitive.ItemIndicator
-        className={cn(
-          'pointer-events-none absolute flex size-4 items-center justify-center text-foreground',
-          indicatorAt === 'right' ? 'end-2' : 'start-2',
-        )}
-      >
-        <CheckIcon className="size-3.5" />
-      </ComboboxPrimitive.ItemIndicator>
+      {indicatorAt !== '' && (
+        <ComboboxPrimitive.ItemIndicator
+          className={cn(
+            'pointer-events-none absolute flex size-4 items-center justify-center text-foreground',
+            indicatorAt === 'right' ? 'end-2' : 'start-2',
+          )}
+        >
+          <CheckIcon className="size-3.5" />
+        </ComboboxPrimitive.ItemIndicator>
+      )}
     </ComboboxPrimitive.Item>
   )
 }
@@ -256,8 +258,8 @@ function ComboboxChips({
 }
 
 function ComboboxChip({
-  className,
   children,
+  className,
   showRemove = true,
   ...props
 }: ComboboxPrimitive.Chip.Props & { showRemove?: boolean }) {
@@ -319,16 +321,16 @@ function useComboboxAnchor() {
 }
 
 type OptionItemProps = {
-  option: allowedPrimitiveT | optionT
+  item: allowedPrimitiveT | itemT
   className?: string
   indicatorAt?: indicatorAtT
 }
 
-function OptionItem({ option, className, indicatorAt }: OptionItemProps) {
-  const value = getValue(option)
-  const label = getLabel(option)
-  const optCls = isOption(option) ? option.className : undefined
-  const disabled = isOption(option) ? option.disabled : undefined
+function OptionItem({ item, className, indicatorAt }: OptionItemProps) {
+  const value = getValue(item)
+  const label = getLabel(item)
+  const optCls = isOption(item) ? item.className : undefined
+  const disabled = isOption(item) ? item.disabled : undefined
 
   return (
     <ComboboxItem
@@ -343,7 +345,7 @@ function OptionItem({ option, className, indicatorAt }: OptionItemProps) {
 }
 
 type OptionsBodyProps = {
-  item: optionsT[number]
+  item: itemsT[number]
   index: number
   itemCls?: string
   groupCls?: string
@@ -354,15 +356,15 @@ function OptionsBody({ item, index, itemCls, groupCls, indicatorAt }: OptionsBod
   if (isGroup(item)) {
     return (
       <ComboboxGroup
-        items={item.options as (allowedPrimitiveT | optionT)[]}
+        items={item.items as (allowedPrimitiveT | itemT)[]}
         className={cn(groupCls, item.className)}
       >
         <ComboboxLabel>{item.group}</ComboboxLabel>
         <ComboboxCollection>
-          {(opt: allowedPrimitiveT | optionT, i) => (
+          {(opt: allowedPrimitiveT | itemT, i) => (
             <OptionItem
               key={getKey(opt, i)}
-              option={opt}
+              item={opt}
               className={cn(itemCls)}
               indicatorAt={indicatorAt}
             />
@@ -378,8 +380,8 @@ function OptionsBody({ item, index, itemCls, groupCls, indicatorAt }: OptionsBod
 
   return (
     <OptionItem
-      key={getKey(item as allowedPrimitiveT | optionT, index)}
-      option={item as allowedPrimitiveT | optionT}
+      key={getKey(item as allowedPrimitiveT | itemT, index)}
+      item={item as allowedPrimitiveT | itemT}
       className={cn(itemCls)}
       indicatorAt={indicatorAt}
     />
@@ -390,7 +392,7 @@ type ComboboxWrapperProps<
   Value = unknown,
   Multiple extends boolean | undefined = boolean | undefined,
 > = Omit<ComboboxPrimitive.Root.Props<Value, Multiple>, 'items'> & {
-  items?: optionsT
+  items?: itemsT
   isLoading?: boolean
   placeholder?: string
   emptyMessage?: string
@@ -398,12 +400,12 @@ type ComboboxWrapperProps<
   contentCls?: string
   groupCls?: string
   itemCls?: string
-  indicatorAt?: 'left' | 'right'
+  indicatorAt?: indicatorAtT
   showTrigger?: boolean
   showClear?: boolean
   inputProps?: React.ComponentProps<'input'>
   hideList?: boolean
-  renderValue?: (value: string, option: allowedPrimitiveT | optionT | undefined) => React.ReactNode
+  renderValue?: (value: string, item: allowedPrimitiveT | itemT | undefined) => React.ReactNode
   getItemLabel?: (value: string) => string
   renderStatus?: React.ReactNode
   renderEmpty?: React.ReactNode
@@ -436,14 +438,14 @@ function ComboboxWrapper<Value, Multiple extends boolean | undefined = false>({
   const { labelMap, labelStringMap, optionMap } = React.useMemo(() => {
     const labelMap: Record<string, React.ReactNode> = {}
     const labelStringMap: Record<string, string> = {}
-    const optionMap: Record<string, allowedPrimitiveT | optionT> = {}
+    const optionMap: Record<string, allowedPrimitiveT | itemT> = {}
     if (!items) return { labelMap, labelStringMap, optionMap }
-    const process = (opts: optionsT) => {
+    const process = (opts: itemsT) => {
       for (const opt of opts) {
         if (isGroup(opt)) {
-          process(opt.options as optionsT)
+          process(opt.items as itemsT)
         } else {
-          const o = opt as allowedPrimitiveT | optionT
+          const o = opt as allowedPrimitiveT | itemT
           const val = getValue(o)
           if (!isSeparator(val)) {
             const key = String(val)
@@ -460,20 +462,15 @@ function ComboboxWrapper<Value, Multiple extends boolean | undefined = false>({
     return { labelMap, labelStringMap, optionMap }
   }, [items])
 
-  const itemsForBase = React.useMemo(() => {
-    if (!items) return []
-    return items.map(item => (isGroup(item) ? { ...item, items: item.options } : item))
-  }, [items])
-
   const hasPopupInput = !multiple && !!renderValue
 
   return (
     <ComboboxRoot
       multiple={multiple}
       disabled={disabled}
-      items={itemsForBase as unknown[]}
+      items={(items ?? []) as unknown[]}
       itemToStringLabel={item => {
-        const key = String(getValue(item as allowedPrimitiveT | optionT))
+        const key = String(getValue(item as allowedPrimitiveT | itemT))
         if (getItemLabel) return getItemLabel(key)
         return labelStringMap[key] ?? key
       }}
@@ -570,29 +567,29 @@ function ComboboxWrapper<Value, Multiple extends boolean | undefined = false>({
           {renderStatus !== undefined
             ? renderStatus
             : isLoading && (
-                <p className="flex items-center justify-center gap-2 py-6">
-                  <Loader2 className="size-4 animate-spin" /> Loading...
-                </p>
-              )}
+              <p className="flex items-center justify-center gap-2 py-6">
+                <Loader2 className="size-4 animate-spin" /> Loading...
+              </p>
+            )}
         </ComboboxStatus>
 
         <ComboboxEmpty>
           {renderEmpty !== undefined
             ? renderEmpty
-            : !isLoading && <p className="py-6">{emptyMessage ?? 'No options found'}</p>}
+            : !isLoading && <p className="py-6">{emptyMessage ?? 'No items found'}</p>}
         </ComboboxEmpty>
 
         <ComboboxList>
-          {(item: optionT, i: number) => (
+          {(item: itemT, i: number) => (
             <OptionsBody
               key={
                 isGroup(item)
                   ? item.group
                   : isSeparator(item)
                     ? `sep-${i}`
-                    : String(getValue(item as allowedPrimitiveT | optionT))
+                    : String(getValue(item as allowedPrimitiveT | itemT))
               }
-              item={item as optionsT[number]}
+              item={item as itemsT[number]}
               index={i}
               groupCls={groupCls}
               itemCls={itemCls}

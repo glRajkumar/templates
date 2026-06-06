@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react'
 import { OTPFieldPreview as OTPFieldPrimitive } from '@base-ui/react/otp-field'
 import { MinusIcon } from 'lucide-react'
@@ -31,8 +33,8 @@ function InputOTPSlot({
         'size-9 border-y border-e border-input bg-transparent text-center text-sm transition-all outline-none',
         'first:rounded-s-md first:border-s last:rounded-e-md',
         'focus:border-ring focus:ring-3 focus:ring-ring/50',
-        'data-[invalid]:border-destructive data-[focused]:data-[invalid]:ring-destructive/20',
-        'dark:bg-input/30 dark:data-[focused]:data-[invalid]:ring-destructive/40',
+        'data-invalid:border-destructive data-focused:data-invalid:ring-destructive/20',
+        'dark:bg-input/30 dark:data-focused:data-invalid:ring-destructive/40',
         'disabled:cursor-not-allowed',
         className,
       )}

@@ -1,3 +1,5 @@
+'use client'
+
 import { cn, parseAllowedPrimitive } from '@/lib/utils'
 
 import { Field, FieldLabel, FieldSet, FieldLegend, FieldError } from './field'
@@ -193,7 +195,7 @@ export function SelectWrapper({
   error,
   invalid,
   className,
-  options,
+  items,
   placeholder,
   value,
   onValueChange,
@@ -207,7 +209,7 @@ export function SelectWrapper({
       <Select
         {...props}
         id={name}
-        options={options}
+        items={items}
         value={value != null ? String(value) : undefined}
         placeholder={placeholder ?? (labelString(label) && `Select ${labelString(label)}`)}
         onValueChange={val => onValueChange?.(parseAllowedPrimitive(val as any))}

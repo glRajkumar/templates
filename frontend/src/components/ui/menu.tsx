@@ -164,22 +164,24 @@ function MenuCheckboxItem({
       className={cn(
         "relative flex cursor-default items-center gap-1.5 rounded-md py-1 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:ps-7 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
-        indicatorAt === 'right' ? 'pe-8 ps-2' : 'pe-2 ps-8',
+        indicatorAt === '' ? 'px-2' : indicatorAt === 'right' ? 'pr-8 pl-2' : 'pr-2 pl-8',
       )}
       checked={checked}
       {...props}
     >
-      <span
-        className={cn(
-          'pointer-events-none absolute flex items-center justify-center',
-          indicatorAt === 'right' ? 'end-2' : 'start-2',
-        )}
-        data-slot="menu-checkbox-item-indicator"
-      >
-        <MenuPrimitive.CheckboxItemIndicator>
-          <CheckIcon />
-        </MenuPrimitive.CheckboxItemIndicator>
-      </span>
+      {indicatorAt !== '' && (
+        <span
+          className={cn(
+            'pointer-events-none absolute flex items-center justify-center',
+            indicatorAt === 'right' ? 'end-2' : 'start-2',
+          )}
+          data-slot="menu-checkbox-item-indicator"
+        >
+          <MenuPrimitive.CheckboxItemIndicator>
+            <CheckIcon />
+          </MenuPrimitive.CheckboxItemIndicator>
+        </span>
+      )}
       {children}
     </MenuPrimitive.CheckboxItem>
   )
@@ -206,21 +208,23 @@ function MenuRadioItem({
       className={cn(
         "relative flex cursor-default items-center gap-1.5 rounded-md py-1 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground focus:**:text-accent-foreground data-inset:ps-7 data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className,
-        indicatorAt === 'right' ? 'pe-8 ps-2' : 'pe-2 ps-8',
+        indicatorAt === '' ? 'px-2' : indicatorAt === 'right' ? 'pr-8 pl-2' : 'pr-2 pl-8',
       )}
       {...props}
     >
-      <span
-        className={cn(
-          'pointer-events-none absolute flex items-center justify-center',
-          indicatorAt === 'right' ? 'end-2' : 'start-2',
-        )}
-        data-slot="menu-radio-item-indicator"
-      >
-        <MenuPrimitive.RadioItemIndicator>
-          <CheckIcon />
-        </MenuPrimitive.RadioItemIndicator>
-      </span>
+      {indicatorAt !== '' && (
+        <span
+          className={cn(
+            'pointer-events-none absolute flex items-center justify-center',
+            indicatorAt === 'right' ? 'end-2' : 'start-2',
+          )}
+          data-slot="menu-radio-item-indicator"
+        >
+          <MenuPrimitive.RadioItemIndicator>
+            <CheckIcon />
+          </MenuPrimitive.RadioItemIndicator>
+        </span>
+      )}
       {children}
     </MenuPrimitive.RadioItem>
   )

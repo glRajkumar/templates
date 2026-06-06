@@ -130,8 +130,8 @@ function SheetFooterWrapper({
   footerCls,
   actionCls,
   cancelCls,
-  onAction = () => { },
-  onCancel = () => { },
+  onAction = () => {},
+  onCancel = () => {},
 }: SheetFooterWrapperProps) {
   return (
     <SheetFooter className={footerCls}>

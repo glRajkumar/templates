@@ -14,36 +14,36 @@ type DatePickerProps = Omit<
   React.ComponentProps<typeof Calendar>,
   'mode' | 'selected' | 'onSelect'
 > & {
-  mode?: 'single' | 'multiple' | 'range'
-  selected?: Selected
-  onSelect?: (...args: any[]) => void
   open?: boolean
-  onOpenChange?: (open: boolean) => void
-  placeholder?: string
-  dateFormat?: string
-  triggerProps?: Omit<React.ComponentProps<typeof Button>, 'children'>
+  mode?: 'single' | 'multiple' | 'range'
   align?: React.ComponentProps<typeof PopoverContent>['align']
+  selected?: Selected
+  dateFormat?: string
+  placeholder?: string
+  triggerProps?: Omit<React.ComponentProps<typeof Button>, 'children'>
+  onOpenChange?: (open: boolean) => void
+  onSelect?: (...args: any[]) => void
 }
 
 function DatePicker({
-  open: controlledOpen,
-  onOpenChange: onOpenChangeProp,
-  placeholder = 'Pick a date',
-  dateFormat = 'dd/MM/yyyy',
+  mode,
+  open,
+  selected,
   triggerProps,
   align = 'start',
-  mode,
-  selected,
+  dateFormat = 'dd/MM/yyyy',
+  placeholder = 'Pick a date',
   onSelect,
+  onOpenChange,
   ...calendarProps
 }: DatePickerProps) {
   const [internalOpen, setInternalOpen] = React.useState(false)
-  const isControlled = controlledOpen !== undefined
-  const open = isControlled ? controlledOpen : internalOpen
+  const isControlled = open !== undefined
+  const open_ = isControlled ? open : internalOpen
 
   function handleOpenChange(next: boolean) {
     if (!isControlled) setInternalOpen(next)
-    onOpenChangeProp?.(next)
+    onOpenChange?.(next)
   }
 
   function handleSelect(...args: any[]) {
@@ -61,7 +61,7 @@ function DatePicker({
   const label = formatSelected(selected, dateFormat)
 
   return (
-    <Popover open={open} onOpenChange={handleOpenChange}>
+    <Popover open={open_} onOpenChange={handleOpenChange}>
       <PopoverTrigger
         render={
           <Button
